@@ -9,7 +9,7 @@ class Tower1 extends Tower
 	public function new(x : Float, y : Float, cellSize : Int) 
 	{
 		super(x, y, cellSize);
-		setup(3, 20, 100, 0);
+		setup(3, 20, 200, 0);
 	}
 	
 	public override function makeInstanceGraphic(cellSize : Int) : Graphic
@@ -19,8 +19,9 @@ class Tower1 extends Tower
 	
 	public static override function makeGraphic(cellSize : Int)
 	{
+		var radius = Math.floor(cellSize / 2);
 		var delta = Math.floor(0.2 * cellSize);
-		var image : Image = Image.createRect(cellSize - 2 * delta, cellSize - 2 * delta, 0xA04040);
+		var image : Image = Image.createCircle(radius - delta, 0xA04040);
 		image.x = delta;
 		image.y = delta;
 		return image;

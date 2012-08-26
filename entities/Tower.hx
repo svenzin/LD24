@@ -69,12 +69,13 @@ class Tower extends Entity
 		var now : Float = Date.now().getTime();
 		if (now >= m_nextShot)
 		{
-			var target : Entity = m_rangeBox.collide("Enemy", x + halfWidth - m_rangeBox.halfWidth, y + halfHeight - m_rangeBox.halfHeight);
-			if (target != null)
+			var targets : Array<Entity> = new Array<Entity>();
+			m_rangeBox.collideInto("Enemy", x + halfWidth - m_rangeBox.halfWidth, y + halfHeight - m_rangeBox.halfHeight, targets);
+			if (targets.length > 0)
 			{
 				m_nextShot = now + Speed;
 				
-				var bullet : Bullet = new Bullet(this, target);
+				var bullet : Bullet = new Bullet(this, targets[Math.floor(Math.random() * targets.length)]);
 				bullet.setup(5, Damage, Pierce);
 			}
 		}

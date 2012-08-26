@@ -20,7 +20,7 @@ class DebugDisplay extends Entity
 		
 		for (index in 0...Nests.length)
 		{
-			var text : Text = new Text("A");
+			var text : Text = new Text("");
 			text.x = 0;
 			text.y = 16 * index;
 			text.resizable = true;
@@ -63,7 +63,7 @@ class DebugDisplay extends Entity
 		}
 	}
 
-	public static var IsOn : Bool = true;
+	public static var IsOn : Bool = false;
 	
 	public var Nests : Array<Nest>;
 	private var m_nestsText : Array<Text>;

@@ -33,7 +33,7 @@ class Genome
 	private static var m_dummyGenerator : GeneratedValue = new GeneratedValue(0, 0);
 	public static function cross(left : Genome, right : Genome) : Genome
 	{
-		var genome : Genome = new Genome(m_dummyGenerator, m_dummyGenerator, m_dummyGenerator);
+		var genome : Genome = new Genome(m_dummyGenerator, m_dummyGenerator, m_dummyGenerator );
 		
 		genome.m_leftLife  = randomize(left.m_leftLife, right.m_leftLife);
 		genome.m_leftSpeed = randomize(left.m_leftSpeed, right.m_leftSpeed);

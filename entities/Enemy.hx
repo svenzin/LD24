@@ -1,6 +1,7 @@
 package entities;
 
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
 import data.Genome;
@@ -24,8 +25,22 @@ class Enemy extends Entity
 		
 		var maxSize : Int = Math.floor(cellSize / 2);
 		var size  : Int = Math.floor(Math.max(2, (maxSize - 2) * Genes.Life / maxLife));
-		var color : Int = Math.floor(0xFFFF00 * Genes.Armor / maxArmor);
-		graphic = Image.createRect(size, size, color);
+		
+		var color : Int;
+		var k : Float = Genes.Armor / maxArmor;
+		if (k <= 0.5)
+			color = 0x00FF00 + 0x010000 * Math.floor(2 * k * 0xFF);
+		else
+			color = 0xFFFF00 - 0x000100 * Math.floor(2 * (k - 0.5) * 0xFF);
+		
+		m_lifeBar = Image.createRect(size, 2, 0x4040FF);
+		m_lifeBar.x = 0;
+		m_lifeBar.y = 1;
+		
+		graphic = new Graphiclist([
+			Image.createRect(size, size, color),
+			m_lifeBar
+		]);
 		setHitbox(size, size);
 		
 		type = "Enemy";
@@ -79,9 +94,15 @@ class Enemy extends Entity
 		}
 	}
 	
+	public function showLife()
+	{
+		m_lifeBar.scaleX = m_life / Genes.Life;
+	}
+	
 	public override function update()
 	{
 		move();
+		showLife();
 		
 		super.update();
 	}
@@ -89,6 +110,8 @@ class Enemy extends Entity
 	public var Genes : Genome;
 
 	private var m_life : Float;
+	private var m_lifeBar : Image;
+	
 	private var m_target : WayPoint;
 	private var m_path : Iterator<WayPoint>;
 	private var m_nest : Nest;

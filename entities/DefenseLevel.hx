@@ -24,7 +24,7 @@ class DefenseLevel extends Entity
 		super();
 		
 		m_unknown = 0xA0A0A0;
-		m_blocks = [0x404040, 0x808080];
+		m_blocks = [0x101010, 0x808080];
 
 		var graphics : Graphiclist = new Graphiclist();
 		for (y in 0...sizeY)
@@ -43,7 +43,7 @@ class DefenseLevel extends Entity
 					block = m_unknown;
 				}
 				
-				var blockGraphic : Image = Image.createRect(cellSize - 1, cellSize - 1, block);
+				var blockGraphic : Image = Image.createRect(cellSize, cellSize, block);
 				blockGraphic.x = cellSize * x;
 				blockGraphic.y = cellSize * y;
 				

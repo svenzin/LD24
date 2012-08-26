@@ -103,25 +103,25 @@ class DefenseWorld extends World
 		);
 		
 		var nest1 : Nest = buildNest(0, 0);
-		nest1.Life = new GeneratedValue(100, 100);
-		nest1.Speed = new GeneratedValue(2.5, 2);
+		nest1.Life = new GeneratedValue(50, 50);
+		nest1.Speed = new GeneratedValue(3, 2);
 		nest1.Armor = new GeneratedValue(10, 10);
-		nest1.Interval = new GeneratedValue(500, 200);
+		nest1.Interval = new GeneratedValue(600, 100);
 		nest1.Paths = [path1, path2];
 		add(nest1);
 		
 		var nest2 : Nest = buildNest(7, 7);
-		nest2.Life = new GeneratedValue(100, 100);
-		nest2.Speed = new GeneratedValue(2.5, 2);
+		nest2.Life = new GeneratedValue(50, 50);
+		nest2.Speed = new GeneratedValue(3, 2);
 		nest2.Armor = new GeneratedValue(10, 10);
-		nest2.Interval = new GeneratedValue(500, 200);
+		nest2.Interval = new GeneratedValue(600, 100);
 		nest2.Paths = [path3, path4];
 		add(nest2);
 		
 		m_nests = [nest1, nest2];
 		
-		Enemy.maxLife  = 200;
-		Enemy.maxSpeed = 5;
+		Enemy.maxLife  = 100;
+		Enemy.maxSpeed = 6;
 		Enemy.maxArmor = 20;
 		
 		add(buildGoal(1, 4));
@@ -162,8 +162,8 @@ class DefenseWorld extends World
 			
 			if (Input.pressed("Breed"))
 			{
-				m_nests[0].breed(20);
-				m_nests[1].breed(10);
+				m_nests[0].breed(8);
+				m_nests[1].breed(16);
 				
 				m_updated = false;
 			}
@@ -174,7 +174,12 @@ class DefenseWorld extends World
 	
 	private function intro()
 	{
-		new Fader(0x000000, 1, 0, DateTools.seconds(1));
+		new Fader(0x000000, 1, 0, DateTools.seconds(2));
+	}
+	
+	private function outro()
+	{
+		new Fader(0x000000, 0, 1, DateTools.seconds(2));
 	}
 	
 	private var m_display : Display;
