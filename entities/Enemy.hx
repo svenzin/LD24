@@ -3,6 +3,7 @@ package entities;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
+import data.Genome;
 import data.Path;
 import data.WayPoint;
 
@@ -12,20 +13,18 @@ class Enemy extends Entity
 	public static var maxSpeed : Float = 1;
 	public static var maxArmor : Float = 1;
 	
-	public function new(nest : Nest, theLife : Float, theSpeed : Float, theArmor : Float, cellSize : Int) 
+	public function new(nest : Nest, genes : Genome, cellSize : Int) 
 	{
 		super();
 		
-		Life = theLife;
-		Speed = theSpeed;
-		Armor = theArmor;
+		Genes = genes;
 		
-		m_life = Life;
+		m_life = Genes.Life;
 		m_nest = nest;
 		
 		var maxSize : Int = Math.floor(cellSize / 2);
-		var size  : Int = Math.floor(Math.max(2, (maxSize - 2) * Life / maxLife));
-		var color : Int = Math.floor(0xFFFF00 * Armor / maxArmor);
+		var size  : Int = Math.floor(Math.max(2, (maxSize - 2) * Genes.Life / maxLife));
+		var color : Int = Math.floor(0xFFFF00 * Genes.Armor / maxArmor);
 		graphic = Image.createRect(size, size, color);
 		setHitbox(size, size);
 		
@@ -41,7 +40,7 @@ class Enemy extends Entity
 	
 	public function move()
 	{
-		if (distanceToPoint(m_target.x, m_target.y) < Speed)
+		if (distanceToPoint(m_target.x, m_target.y) < Genes.Speed)
 		{
 			if (m_path.hasNext())
 			{
@@ -54,7 +53,7 @@ class Enemy extends Entity
 		}
 		else
 		{
-			moveTowards(m_target.x, m_target.y, Speed);
+			moveTowards(m_target.x, m_target.y, Genes.Speed);
 		}
 	}
 	
@@ -72,7 +71,7 @@ class Enemy extends Entity
 	
 	public function hit(bullet : Bullet)
 	{
-		m_life -= Math.max(0, bullet.Damage - Math.max(0, Armor - bullet.Pierce));
+		m_life -= Math.max(0, bullet.Damage - Math.max(0, Genes.Armor - bullet.Pierce));
 		
 		if (m_life <= 0)
 		{
@@ -86,10 +85,8 @@ class Enemy extends Entity
 		
 		super.update();
 	}
-	
-	public var Life : Float;
-	public var Speed : Float;
-	public var Armor : Float;
+
+	public var Genes : Genome;
 
 	private var m_life : Float;
 	private var m_target : WayPoint;

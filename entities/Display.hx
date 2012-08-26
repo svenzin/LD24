@@ -21,42 +21,43 @@ class Display extends Entity
 		
 		setLayer(Global.GuiLayer);
 		
-		var tower1Text : Text = new Text("[1] :");
+		var tower1Text : Text = new Text("[1]");
 		tower1Text.x = 0;
 		tower1Text.y = 0;
 		m_tower1 = Tower1.makeGraphic(32);
 		m_tower1.x = 32;
 		m_tower1.y = 0;
 		
-		var tower2Text : Text = new Text("[2] :");
+		var tower2Text : Text = new Text("[2]");
 		tower2Text.x = 0;
 		tower2Text.y = 32;
 		m_tower2 = Tower2.makeGraphic(32);
 		m_tower2.x = 32;
 		m_tower2.y = 32;
 		
-		var tower3Text : Text = new Text("[3] :");
+		var tower3Text : Text = new Text("[3]");
 		tower3Text.x = 0;
 		tower3Text.y = 2 * 32;
 		m_tower3 = Tower3.makeGraphic(32);
 		m_tower3.x = 32;
 		m_tower3.y = 2 * 32;
 		
-		var towersText : Text = new Text("Towers");
-		towersText.x = 0;
-		towersText.y = 4 * 32;
-		
 		m_towers = new Text("");
 		m_towers.x = 0;
-		m_towers.y = 5 * 32;
+		m_towers.y = 4 * 32;
 		m_towers.resizable = true;
+		
+		var survivorsText : Text = new Text("Survivors");
+		survivorsText.x = 0;
+		survivorsText.y = 6 * 32;
 		
 		graphic = new Graphiclist([
 			bg,
 			tower1Text, m_tower1,
 			tower2Text, m_tower2,
 			tower3Text, m_tower3,
-			towersText, m_towers
+			m_towers, 
+			survivorsText
 		]);
 	}
 	
@@ -65,10 +66,24 @@ class Display extends Entity
 		var count : Int = HXP.world.typeCount("Tower");
 		
 		var builder : StringBuf = new StringBuf();
+		builder.add("Towers ");
 		builder.add(count);
 		builder.add(" / ");
 		builder.add(Score.MaximumTowersCount);
 		m_towers.text = builder.toString();
+	}
+	
+	public function addWave(index : Int, kills : Int)
+	{
+		var waveResuts : StringBuf = new StringBuf();
+		waveResuts.add(index + 1);
+		waveResuts.add(". ");
+		waveResuts.add(kills);
+		
+		var waveText : Text = new Text(waveResuts.toString());
+		waveText.x = 0;
+		waveText.y = (7 + index) * 32;
+		addGraphic(waveText); 
 	}
 
 	private var m_tower1 : Graphic;

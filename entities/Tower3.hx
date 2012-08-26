@@ -9,7 +9,7 @@ class Tower3 extends Tower
 	public function new(x : Float, y : Float, cellSize : Int) 
 	{
 		super(x, y, cellSize);
-		setup(4, 10, 100, 10);
+		setup(6, 10, 300, 10);
 	}
 	
 	public override function makeInstanceGraphic(cellSize : Int) : Graphic

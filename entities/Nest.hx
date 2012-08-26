@@ -4,6 +4,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import data.GeneratedValue;
+import data.Genome;
 import data.Path;
 import flash.sampler.NewObjectSample;
 
@@ -33,23 +34,64 @@ class Nest extends Entity
 	public function spawn()
 	{
 		var now : Float = Date.now().getTime();
-		if (now > m_nextSpawn)
+		if (m_genomes != null)
 		{
-			m_nextSpawn = Date.fromTime(now + Interval.get()).getTime();
-			
-			var spawnedEnemy : Enemy = new Enemy(this, Life.get(), Speed.get(), Armor.get(), m_cellSize);
-			spawnedEnemy.follow(Paths[Math.floor(Math.random() * Paths.length)]);
-			
-			HXP.world.add(spawnedEnemy);
+			if (now > m_nextSpawn && m_genomes.length > 0)
+			{
+				m_nextSpawn = Date.fromTime(now + Interval.get()).getTime();
+				
+				var spawnedEnemy : Enemy = new Enemy(this, m_genomes.pop(), m_cellSize);
+				spawnedEnemy.follow(Paths[Math.floor(Math.random() * Paths.length)]);
+				
+				HXP.world.add(spawnedEnemy);
+			}
 		}
 	}
 	
 	public function reclaim(enemy : Enemy)
 	{
-		Life.accumulate(enemy.Life);
-		Speed.accumulate(enemy.Speed);
-		Armor.accumulate(enemy.Armor);
+		m_reclaimed.push(enemy.Genes);
 	}
+	
+	private function createGenome() : Genome { return new Genome(Life, Speed, Armor); }
+	private function createPool(minSize : Int) : Array<Genome>
+	{
+		var pool : Array<Genome> = new Array<Genome>();
+		
+		if (m_reclaimed != null)
+		{
+			for (left in 0...m_reclaimed.length)
+				for (right in (left + 1)...m_reclaimed.length)
+					pool.push(Genome.cross(m_reclaimed[left], m_reclaimed[right]));
+		}
+		
+		while (pool.length < minSize) pool.push(createGenome());
+		
+		return pool;
+	}
+	public function breed(amount : Int)
+	{
+		m_genomes = new Array<Genome>();
+		
+		var pool : Array<Genome> = createPool(amount);
+		
+		for (counter in 0...amount)
+		{
+			var index : Int = Math.floor(Math.random() * pool.length);
+			m_genomes.push(pool[index]);
+		}
+		
+		m_reclaimed = new Array<Genome>();
+	}
+	
+	public function getSurvivorsCount() : Int
+	{
+		if (m_reclaimed != null) return m_reclaimed.length;
+		return 0;
+	}
+	
+	private var m_genomes : Array<Genome>;
+	private var m_reclaimed : Array<Genome>;
 	
 	private var m_cellSize : Int;
 	private var m_nextSpawn : Float;

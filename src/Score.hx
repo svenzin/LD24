@@ -7,6 +7,6 @@ class Score
 		
 	}
 	
-	public static var MaximumTowersCount(default, null) : Int = 5;
+	public static var MaximumTowersCount(default, null) : Int = 3;
 	
 }

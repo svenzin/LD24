@@ -1,5 +1,7 @@
 package worlds;
 
+import com.haxepunk.utils.Input;
+import com.haxepunk.utils.Key;
 import entities.effects.Fader;
 import com.haxepunk.World;
 import data.GeneratedValue;
@@ -101,7 +103,7 @@ class DefenseWorld extends World
 		);
 		
 		var nest1 : Nest = buildNest(0, 0);
-		nest1.Life = new GeneratedValue(40, 40);
+		nest1.Life = new GeneratedValue(100, 100);
 		nest1.Speed = new GeneratedValue(2.5, 2);
 		nest1.Armor = new GeneratedValue(10, 10);
 		nest1.Interval = new GeneratedValue(500, 200);
@@ -109,30 +111,75 @@ class DefenseWorld extends World
 		add(nest1);
 		
 		var nest2 : Nest = buildNest(7, 7);
-		nest2.Life = new GeneratedValue(40, 40);
+		nest2.Life = new GeneratedValue(100, 100);
 		nest2.Speed = new GeneratedValue(2.5, 2);
 		nest2.Armor = new GeneratedValue(10, 10);
 		nest2.Interval = new GeneratedValue(500, 200);
 		nest2.Paths = [path3, path4];
 		add(nest2);
 		
-		Enemy.maxLife  = 80;
+		m_nests = [nest1, nest2];
+		
+		Enemy.maxLife  = 200;
 		Enemy.maxSpeed = 5;
 		Enemy.maxArmor = 20;
 		
 		add(buildGoal(1, 4));
 		
-		add(new Display());
+		m_display = new Display();
+		add(m_display);
 		
 		var debug : DebugDisplay = new DebugDisplay();
 		debug.prepare([nest1, nest2]);
 		add(debug);
+		
+		Input.define("Breed", [Key.SPACE]);
+		Input.define("Quit", [Key.Q]);
+		m_waveCount = 0;
+		m_updated = true;
+	}
+	
+	private function canBreed() : Bool
+	{
+		var count : Int = typeCount("Enemy");
+		return count == 0 && m_waveCount < 8;
+	}
+	
+	public override function update()
+	{
+		if (canBreed())
+		{
+			if (!m_updated)
+			{
+				m_display.addWave(m_waveCount, 
+					m_nests[0].getSurvivorsCount() +
+					m_nests[1].getSurvivorsCount()
+				);
+				
+				m_waveCount++;
+				m_updated = true;
+			}
+			
+			if (Input.pressed("Breed"))
+			{
+				m_nests[0].breed(20);
+				m_nests[1].breed(10);
+				
+				m_updated = false;
+			}
+		}
+		
+		super.update();
 	}
 	
 	private function intro()
 	{
 		new Fader(0x000000, 1, 0, DateTools.seconds(1));
 	}
+	
+	private var m_display : Display;
+	private var m_waveCount : Int;
+	private var m_updated : Bool;
 	
 	public var m_cellSize : Int;
 	
@@ -141,4 +188,6 @@ class DefenseWorld extends World
 	
 	public var m_available : Array<Int>;
 	public var m_type : Array<Int>;
+	
+	public var m_nests : Array<Nest>;
 }
