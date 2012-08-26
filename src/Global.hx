@@ -6,6 +6,7 @@ class Global
 		
 	}
 	
-	public static var FaderLayer(default, null) : Int = -10;
+	public static var FaderLayer : Int = -10;
+	public static var GuiLayer   : Int = -1;
 	
 }

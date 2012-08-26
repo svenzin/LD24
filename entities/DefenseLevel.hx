@@ -108,7 +108,7 @@ class DefenseLevel extends Entity
 		{
 			if ((m_action == Turret1) || (m_action == Turret2) || (m_action == Turret3))
 			{
-				if (isAvailable(x, y))
+				if (isAvailable(x, y) && canBuild())
 				{
 					setAvailable(x, y, false);
 					
@@ -155,6 +155,12 @@ class DefenseLevel extends Entity
 		return m_available[m_sizeX * y + x] != 0;
 	}
 	
+	private function canBuild() : Bool
+	{
+		var count : Int = HXP.world.typeCount("Tower");
+		return count < Score.MaximumTowersCount;
+	}
+	
 	private function isInside(x : Int, y : Int) : Bool
 	{
 		return (x >= 0) && (x < m_sizeX) &&
@@ -174,7 +180,7 @@ class DefenseLevel extends Entity
 		if ((m_action == Turret1) || (m_action == Turret2) || (m_action == Turret3))
 		{
 			if (isInside(x, y))
-				if (isAvailable(x, y))
+				if (isAvailable(x, y) && canBuild())
 					setSelected(x, y, 0.5, 0xFFFFFF);
 				else
 					setSelected(x, y, 0.5, 0xFF0000);

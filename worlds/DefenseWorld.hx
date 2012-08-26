@@ -101,24 +101,24 @@ class DefenseWorld extends World
 		);
 		
 		var nest1 : Nest = buildNest(0, 0);
-		nest1.Life = new GeneratedValue(100, 100);
+		nest1.Life = new GeneratedValue(40, 40);
 		nest1.Speed = new GeneratedValue(2.5, 2);
 		nest1.Armor = new GeneratedValue(10, 10);
-		nest1.Interval = new GeneratedValue(500, 500);
+		nest1.Interval = new GeneratedValue(500, 200);
 		nest1.Paths = [path1, path2];
 		add(nest1);
 		
 		var nest2 : Nest = buildNest(7, 7);
-		nest2.Life = new GeneratedValue(100, 100);
+		nest2.Life = new GeneratedValue(40, 40);
 		nest2.Speed = new GeneratedValue(2.5, 2);
 		nest2.Armor = new GeneratedValue(10, 10);
-		nest2.Interval = new GeneratedValue(500, 500);
+		nest2.Interval = new GeneratedValue(500, 200);
 		nest2.Paths = [path3, path4];
 		add(nest2);
 		
-		Enemy.maxLife  = 200;
+		Enemy.maxLife  = 80;
 		Enemy.maxSpeed = 5;
-		Enemy.maxArmor = 10;
+		Enemy.maxArmor = 20;
 		
 		add(buildGoal(1, 4));
 		
