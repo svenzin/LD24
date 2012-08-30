@@ -18,10 +18,13 @@ class Fader extends Entity
 		setOrigin(0, 0);
 		
 		m_fader = Image.createRect(HXP.width, HXP.height, color);
+		m_fader.alpha = alphaFrom;
 		setGraphic(m_fader);
 		setLayer(Global.FaderLayer);
 		
 		m_start = Date.now().getTime();
+		
+		Callback = null;
 		
 		HXP.world.add(this);
 	}
@@ -37,10 +40,14 @@ class Fader extends Entity
 		{
 			m_fader.alpha = m_to;
 			HXP.world.remove(this);
+			
+			if (Callback != null) Callback();
 		}
 		
 		super.update();
 	}
+	
+	public var Callback(default, default) : Void -> Void;
 	
 	private var m_from : Float;
 	private var m_to : Float;

@@ -174,7 +174,7 @@ class DefenseWorld extends World
 	
 	private function intro()
 	{
-		new Fader(0x000000, 1, 0, DateTools.seconds(2));
+		new Fader(0x000000, 1, 0, DateTools.seconds(1));
 	}
 	
 	private function outro()

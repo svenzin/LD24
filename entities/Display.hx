@@ -7,7 +7,6 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.Graphiclist;
 import flash.sampler.NewObjectSample;
-import worlds.GameWorld;
 
 class Display extends Entity
 {
